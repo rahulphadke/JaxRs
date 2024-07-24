@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jsxrs01FrontEnd (Cross origin) for jaxrsWebapp01</title>
+<style>
+div {
+	display: block;
+	/* width: 40%; */
+	float: left;
+	
+	margin: 5pt;
+	padding: 5pt;
+	border: 1pt solid;
+	
+	font-size: large;
+	background-color: rgb(253, 231, 179)
+}
+
+#menu {
+	display: block;
+	float: left;
+	width: 15%;
+	margin: 5pt;
+	padding: 5pt;
+	border: 1pt solid;
+	color: white;
+	background-color: rgba(140, 20, 50);
+	font-size: x-large;
+}
+
+li {
+	padding: 3pt;
+	margin: 20pt 2pt;
+	list-style-type: square;
+}
+
+li:hover {
+	background-color: olive;;
+}
+
+li a {
+	text-decoration: none;
+}
+
+a:visited {
+	color: inherit;
+}
+
+#result {
+	display: inline;
+	width: 60%;
+	border: 1pt solid;
+	background-color: pink;
+}
+
+[id$=Helper] {
+	display: none;
+	background-color: gray;
+}
+</style>
+
+<script type="text/javascript" src="jaxrsCrud.js">
+</script>
+
+<script type="text/javascript">
+
+	function printResult(result){
+		document.getElementById("result").innerHTML=
+		"<h2>"+result+"</h2>";
+	}
+	function save(){
+		console.log("save()");
+		const empData =  {
+			    empno: parseInt(document.getElementById("empno").value),
+			    name: document.getElementById("name").value,
+			    salary: parseInt(document.getElementById("salary").value)
+			};
+		let error=saveEmp(empData,printResult);
+		if(error)
+			printResult(error);
+	}
+	
+	function showEmp(){
+		console.log("showEmp()");
+		let id=parseInt(document.getElementById("eno").value);
+		let error=getEmp(id,printResult);
+		if(error)
+			printResult(error);
+	}
+	
+	function delEmp(){
+		console.log("delEmp()");
+		let id=parseInt(document.getElementById("delno").value);
+		let error=deleteEmp(id,printResult);
+		if(error)
+			printResult(error);
+	}
+
+	function update(){
+		console.log("update()");
+		const empData =  {
+		    empno: parseInt(document.getElementById("eno").value),
+		    name: document.getElementById("nm").value,
+		    salary: parseInt(document.getElementById("sal").value)
+		};
+		let error=updateEmp(empData,printResult);
+		if(error)
+			printResult(error);
+	}
+
+	function showAll(){
+		console.log("showAll()");
+		let error=getAllEmp(printResult);
+		if(error)
+			printResult(error);
+	}
+
+	function toggle(elId){
+		const inputs=document.querySelectorAll('[input]');
+		Array.from(inputs)
+		.map(e=>{
+			console.log(e.value);
+			e.value=""});
+		
+		console.log("cleared inputs");
+		
+		// hide all Helpers div
+		const els=document.querySelectorAll('[id$="Helper"]'); // all ending with "Helper"
+		Array.from(els).map(
+				(div)=>{ div.style.display="none";	}); 
+		
+		// display the required div
+	 	const targetDiv=document.getElementById(elId);
+		targetDiv.style.display="block";
+
+		if(elId=="updateHelper")
+			document.getElementById("searchHelper").style.display="block";
+
+		
+		/* // display the Helper div
+		 switch(elId){
+ 			case "searchHelper" :
+				// others keep hidden
+				break;
+			case "addNewHelper" :
+				// others keep hidden
+				break;
+ 			case "updateHelper" :
+				document.getElementById("searchHelper").style.display="block";
+				// others keep hidden
+				break;
+				
+			case "delHelper" :
+				document.getElementById("searchHelper").style.display="block";
+				// others keep hidden
+				break; 
+		} */ 
+	}
+</script>
+</head>
+<body style="background-color: orange;">
+	<h1>
+		EMP CRUD using JaxRs (CrossOrigin request)
+	</h1>
+	<!-- <div > -->
+	<ul id="menu" style="list-style: none;">
+		<li><a href="#" onclick="showAll()">Show All</a></li>
+		<li><a href="#" onclick="toggle('searchHelper')">Search</a></li>
+		<li><a href="#" onclick="toggle('addNewHelper')">Add new</a></li>
+		<li><a href="#" onclick="toggle('updateHelper')">Update</a></li>
+		<li><a href="#" onclick="toggle('delHelper')">Delete</a></li>
+	</ul>
+	<!-- </div> -->
+	<div id="result">Result here</div>
+
+	<div id="addNewHelper">
+		<input id="empno" type="number" placeholder="Enter empno" /> <input
+			id="name" type="text" placeholder="Enter name" /> <input id="salary"
+			type="number" placeholder="Enter salary" /> <input type="button"
+			value="Save" onclick="save()">
+	</div>
+
+	<div id="searchHelper">
+		<input id="eno" type="number" placeholder="Enter empno to search" />
+		<input type="button" value="Search" onclick="showEmp()">
+	</div>
+
+	<div id="updateHelper">
+		<input id="nm" type="text" placeholder="Enter name" /> <input
+			id="sal" type="number" placeholder="Enter salary" /> <input
+			type="button" value="Update" onclick="update()">
+	</div>
+
+	<div id="delHelper">
+		<input id="delno" type="number" placeholder="Enter empno to delete" />
+		<input type="button" value="Delete" onclick="delEmp()">
+	</div>
+
+
+</body>
+</html>

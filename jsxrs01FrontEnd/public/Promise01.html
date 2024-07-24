@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+alarm=setTimeout(() => { alert('Alarm Promise done..!') }, 5000);
+
+
+const promise1=new Promise((success,failure)=>{
+	alarm();	
+}) .then ( (v)=> alert('success .. done !!')) ;
+</script>
+
+<h2> Alarm set after 5 seconds </h2>
+<h3> You can cancel it using following button</h3>
+<button type="button" onclick="clearTimeout(handle); ">Cancel alarm</button>
+
+
+</body>
+</html>
